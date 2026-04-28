@@ -206,9 +206,28 @@ export default function HomePage() {
       inner.style.transform       = prevTransform;
       inner.style.transformOrigin = prevOrigin;
 
-      const link     = document.createElement('a');
-      link.download  = `meme-${designs[memes[index].design].name.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}.png`;
-      link.href      = canvas.toDataURL('image/png', 1.0);
+      const filename = `meme-${designs[memes[index].design].name.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}.png`;
+      const dataUrl  = canvas.toDataURL('image/png', 1.0);
+
+      // On mobile, use the Web Share API so the user can "Save Image" to Photos
+      if (navigator.canShare) {
+        try {
+          const blob = await (await fetch(dataUrl)).blob();
+          const file = new File([blob], filename, { type: 'image/png' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file], title: filename });
+            return; // share sheet handled — no need for anchor fallback
+          }
+        } catch (shareErr) {
+          // User cancelled or share failed — fall through to anchor download
+          if ((shareErr as Error).name === 'AbortError') return;
+        }
+      }
+
+      // Desktop / fallback: trigger a normal file download
+      const link    = document.createElement('a');
+      link.download = filename;
+      link.href     = dataUrl;
       link.click();
     } catch (err) {
       console.error('Download failed:', err);
