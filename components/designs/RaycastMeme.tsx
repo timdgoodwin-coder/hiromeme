@@ -82,7 +82,8 @@ export default function RaycastMeme({ data }: Props) {
       <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Gradient label */}
         <div style={{
-          display: 'inline-flex',
+          display: 'flex',
+          width: 'fit-content',
           alignItems: 'center',
           gap: '8px',
           background: 'linear-gradient(135deg, rgba(255,99,99,0.15), rgba(124,58,237,0.15))',
@@ -144,14 +145,14 @@ export default function RaycastMeme({ data }: Props) {
         {/* CTA pill */}
         {cta && (
           <div style={{
-            display: 'inline-flex',
+            display: 'flex',
+            width: 'fit-content',
             alignItems: 'center',
             gap: '10px',
-            background: 'linear-gradient(135deg, #ff6363, #7c3aed)',
+            background: '#ff6363',
             borderRadius: '10px',
             padding: '14px 28px',
             marginTop: '8px',
-            boxShadow: '0 0 40px rgba(255,99,99,0.3)',
           }}>
             <span style={{
               fontFamily: "'Inter', sans-serif",
@@ -159,7 +160,7 @@ export default function RaycastMeme({ data }: Props) {
               fontWeight: 700,
               color: '#ffffff',
             }}>{cta}</span>
-            <span style={{ fontSize: '22px', color: '#fff', opacity: 0.8 }}>→</span>
+            <span style={{ fontSize: '22px', color: '#fff' }}>→</span>
           </div>
         )}
       </div>

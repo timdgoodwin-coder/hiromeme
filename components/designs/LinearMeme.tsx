@@ -89,7 +89,8 @@ export default function LinearMeme({ data }: Props) {
       <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Label chip */}
         <div style={{
-          display: 'inline-flex',
+          display: 'flex',
+          width: 'fit-content',
           alignItems: 'center',
           gap: '8px',
           background: '#ff6b3512',
@@ -168,14 +169,14 @@ export default function LinearMeme({ data }: Props) {
         {/* CTA */}
         {cta && (
           <div style={{
-            display: 'inline-flex',
+            display: 'flex',
+            width: 'fit-content',
             alignItems: 'center',
             gap: '10px',
             background: '#ff6b35',
             borderRadius: '10px',
             padding: '16px 30px',
             marginTop: '8px',
-            boxShadow: '0 4px 24px rgba(255,107,53,0.25)',
           }}>
             <span style={{
               fontFamily: "'Inter', sans-serif",
@@ -184,7 +185,7 @@ export default function LinearMeme({ data }: Props) {
               color: '#ffffff',
               letterSpacing: '-0.01em',
             }}>{cta}</span>
-            <span style={{ color: '#fff', fontSize: '22px', opacity: 0.85 }}>→</span>
+            <span style={{ color: '#fff', fontSize: '22px' }}>→</span>
           </div>
         )}
       </div>

@@ -64,7 +64,8 @@ export default function SpotifyMeme({ data }: Props) {
       <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Label */}
         <div style={{
-          display: 'inline-flex',
+          display: 'flex',
+          width: 'fit-content',
           alignItems: 'center',
           gap: '8px',
           background: '#1db95420',
@@ -130,7 +131,8 @@ export default function SpotifyMeme({ data }: Props) {
         {/* CTA */}
         {cta && (
           <div style={{
-            display: 'inline-flex',
+            display: 'flex',
+            width: 'fit-content',
             alignItems: 'center',
             gap: '12px',
             background: '#1db954',
