@@ -208,27 +208,43 @@ export default function HomePage() {
 
       const filename = `meme-${designs[memes[index].design].name.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}.png`;
       const dataUrl  = canvas.toDataURL('image/png', 1.0);
+      const blob     = await (await fetch(dataUrl)).blob();
+      const blobUrl  = URL.createObjectURL(blob);
 
-      // On mobile, use the Web Share API so the user can "Save Image" to Photos
+      // Tier 1: Web Share API with file (iOS Safari 15+, some Android)
       if (navigator.canShare) {
         try {
-          const blob = await (await fetch(dataUrl)).blob();
           const file = new File([blob], filename, { type: 'image/png' });
           if (navigator.canShare({ files: [file] })) {
             await navigator.share({ files: [file], title: filename });
-            return; // share sheet handled — no need for anchor fallback
+            URL.revokeObjectURL(blobUrl);
+            return;
           }
         } catch (shareErr) {
-          // User cancelled or share failed — fall through to anchor download
-          if ((shareErr as Error).name === 'AbortError') return;
+          if ((shareErr as Error).name === 'AbortError') {
+            URL.revokeObjectURL(blobUrl);
+            return;
+          }
+          // fall through to next tier
         }
       }
 
-      // Desktop / fallback: trigger a normal file download
-      const link    = document.createElement('a');
-      link.download = filename;
-      link.href     = dataUrl;
-      link.click();
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        // Tier 2: Open image in new tab — user can long-press → "Save to Photos"
+        // Works on ALL mobile browsers (Chrome iOS, Firefox, Samsung Internet, etc.)
+        window.open(blobUrl, '_blank');
+        // Revoke after a delay so the new tab has time to load the image
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
+      } else {
+        // Tier 3: Desktop — standard anchor download
+        const link    = document.createElement('a');
+        link.download = filename;
+        link.href     = blobUrl;
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 5_000);
+      }
     } catch (err) {
       console.error('Download failed:', err);
     } finally {
