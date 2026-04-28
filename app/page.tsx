@@ -20,7 +20,7 @@ function BtnGroup<T extends string>({
   value,
   onChange,
 }: {
-  options: { value: T; label: string }[];
+  options: readonly { value: T; label: string }[];
   value: T;
   onChange: (v: T) => void;
 }) {
@@ -235,7 +235,7 @@ export default function HomePage() {
         <div className={styles.headerInner}>
           <div className={styles.logo}>
             <span className={styles.logoIcon}>⚡</span>
-            <span className={styles.logoText}>MemeForge</span>
+            <span className={styles.logoText}>HiroMeme</span>
           </div>
           <div className={styles.headerRight}>
             <span className={styles.tagline}>Punchy posts, instantly</span>
