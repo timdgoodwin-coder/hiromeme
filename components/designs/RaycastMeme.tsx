@@ -100,9 +100,7 @@ export default function RaycastMeme({ data }: Props) {
             fontWeight: 700,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            background: 'linear-gradient(135deg, #ff6363, #7c3aed)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            color: '#ff6363',
           }}>Hot take</span>
         </div>
 
@@ -115,9 +113,6 @@ export default function RaycastMeme({ data }: Props) {
           letterSpacing: '-0.03em',
           color: '#ffffff',
           marginBottom: '28px',
-          background: 'linear-gradient(135deg, #ffffff 0%, #d1d5db 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
         }}>
           {headline}
         </h1>
@@ -184,9 +179,7 @@ export default function RaycastMeme({ data }: Props) {
             fontFamily: "'Inter', sans-serif",
             fontSize: '22px',
             fontWeight: 600,
-            background: 'linear-gradient(135deg, #ff6363, #7c3aed)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            color: '#ff6363',
           }}>
             {linkLabel || profileLink}
           </div>
