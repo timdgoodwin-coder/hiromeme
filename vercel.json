@@ -1,1 +1,3 @@
-{"name":"hiromeme","version":2}
+{
+  "framework": "nextjs"
+}
