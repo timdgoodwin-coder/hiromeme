@@ -266,10 +266,8 @@
   overflow: hidden;
 }
 
-/* Scale the internal MemeCanvas from 1080 to the preview width */
+/* The inner design component sets its own dimensions via canvasWidth/canvasHeight props */
 .canvasInner > div {
-  width: 1080px !important;
-  height: 1080px !important;
   transform-origin: top left;
   /* scale set via JS in MemePreview */
 }

@@ -16,7 +16,7 @@ interface MemePreviewProps {
 export default function MemePreview({ design, data, isExport = false, exportSize }: MemePreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Scale the 1080x1080 design to fit the preview container
+  // Scale the rendered design to fit the preview container
   useEffect(() => {
     if (isExport) return;
     const el = containerRef.current;
@@ -26,8 +26,8 @@ export default function MemePreview({ design, data, isExport = false, exportSize
       const parent = el.parentElement;
       if (!parent) return;
       const parentWidth = parent.offsetWidth;
-      // Always scale from 1080 base width for preview
-      const scale = parentWidth / 1080;
+      // Always scale from base canvas width for preview
+      const scale = parentWidth / (exportSize?.width ?? 1080);
       el.style.transform = `scale(${scale})`;
       el.style.transformOrigin = 'top left';
     };
@@ -37,7 +37,7 @@ export default function MemePreview({ design, data, isExport = false, exportSize
     const parent = el.parentElement;
     if (parent) observer.observe(parent);
     return () => observer.disconnect();
-  }, [isExport]);
+  }, [isExport, exportSize?.width]);
 
   const designComponents = {
     spotify: SpotifyMeme,
@@ -62,7 +62,7 @@ export default function MemePreview({ design, data, isExport = false, exportSize
         flexShrink: 0,
       }}
     >
-      <DesignComponent data={data} />
+      <DesignComponent data={data} canvasWidth={w} canvasHeight={h} />
     </div>
   );
 }

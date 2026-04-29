@@ -513,6 +513,7 @@ export default function HomePage() {
                           design={meme.design}
                           data={memeData}
                           isExport={false}
+                          exportSize={PLATFORM_SIZES[platform]}
                         />
                       </div>
                     </div>
