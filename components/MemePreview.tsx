@@ -10,9 +10,10 @@ interface MemePreviewProps {
   design: MemeDesign;
   data: MemeData;
   isExport?: boolean;
+  exportSize?: { width: number; height: number };
 }
 
-export default function MemePreview({ design, data, isExport = false }: MemePreviewProps) {
+export default function MemePreview({ design, data, isExport = false, exportSize }: MemePreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Scale the 1080x1080 design to fit the preview container
@@ -25,6 +26,7 @@ export default function MemePreview({ design, data, isExport = false }: MemePrev
       const parent = el.parentElement;
       if (!parent) return;
       const parentWidth = parent.offsetWidth;
+      // Always scale from 1080 base width for preview
       const scale = parentWidth / 1080;
       el.style.transform = `scale(${scale})`;
       el.style.transformOrigin = 'top left';
@@ -45,12 +47,16 @@ export default function MemePreview({ design, data, isExport = false }: MemePrev
 
   const DesignComponent = designComponents[design];
 
+  // During export use the platform-specific dimensions; otherwise default 1080×1080
+  const w = exportSize?.width  ?? 1080;
+  const h = exportSize?.height ?? 1080;
+
   return (
     <div
       ref={containerRef}
       style={{
-        width: '1080px',
-        height: '1080px',
+        width: `${w}px`,
+        height: `${h}px`,
         position: 'relative',
         overflow: 'hidden',
         flexShrink: 0,

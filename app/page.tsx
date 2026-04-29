@@ -48,6 +48,7 @@ const PLATFORM_OPTIONS = [
   { value: 'facebook',  label: '👥 Facebook'  },
 ] as const;
 
+
 const TONE_OPTIONS = [
   { value: 'edgy',         label: '🔥 Edgy'        },
   { value: 'warm',         label: '🤗 Warm'         },
@@ -98,6 +99,14 @@ type ContentType = typeof CONTENT_TYPE_OPTIONS[number]['value'];
 type Humour      = typeof HUMOUR_OPTIONS[number]['value'];
 type Controversy = typeof CONTROVERSY_OPTIONS[number]['value'];
 type Action      = typeof ACTION_OPTIONS[number]['value'];
+
+// Optimal export dimensions per platform
+const PLATFORM_SIZES: Record<Platform, { width: number; height: number }> = {
+  instagram: { width: 1080, height: 1080 }, // square post
+  linkedin:  { width: 1200, height: 628  }, // landscape preview card
+  twitter:   { width: 1600, height: 900  }, // 16:9 card
+  facebook:  { width: 1200, height: 630  }, // link / post image
+};
 
 // ─── Main component ───────────────────────────────────────────────────────────
 export default function HomePage() {
@@ -178,6 +187,8 @@ export default function HomePage() {
     const el = previewRefs.current[index];
     if (!el || !memes) return;
 
+    const { width: exportW, height: exportH } = PLATFORM_SIZES[platform];
+
     setDownloading(index);
     try {
       const html2canvas = (await import('html2canvas')).default;
@@ -185,28 +196,35 @@ export default function HomePage() {
       const inner = el.firstElementChild as HTMLElement | null;
       if (!inner) return;
 
+      // Temporarily remove the preview scale transform so html2canvas sees full pixels
       const prevTransform = inner.style.transform;
       const prevOrigin    = inner.style.transformOrigin;
+      const prevWidth     = inner.style.width;
+      const prevHeight    = inner.style.height;
 
       inner.style.transform       = 'none';
       inner.style.transformOrigin = 'top left';
+      inner.style.width           = `${exportW}px`;
+      inner.style.height          = `${exportH}px`;
 
       const canvas = await html2canvas(inner, {
         scale: 1,
         useCORS: true,
         allowTaint: true,
         backgroundColor: null,
-        width: 1080,
-        height: 1080,
-        windowWidth: 1080,
-        windowHeight: 1080,
+        width:        exportW,
+        height:       exportH,
+        windowWidth:  exportW,
+        windowHeight: exportH,
         logging: false,
       });
 
       inner.style.transform       = prevTransform;
       inner.style.transformOrigin = prevOrigin;
+      inner.style.width           = prevWidth;
+      inner.style.height          = prevHeight;
 
-      const filename = `meme-${designs[memes[index].design].name.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}.png`;
+      const filename = `meme-${designs[memes[index].design].name.toLowerCase().replace(/\s+/g, '-')}-${platform}-${exportW}x${exportH}-${Date.now()}.png`;
       const dataUrl  = canvas.toDataURL('image/png', 1.0);
       const blob     = await (await fetch(dataUrl)).blob();
       const blobUrl  = URL.createObjectURL(blob);
@@ -250,7 +268,7 @@ export default function HomePage() {
     } finally {
       setDownloading(null);
     }
-  }, [memes]);
+  }, [memes, platform]);
 
   const copyCaption = async (index: number, caption: string) => {
     await navigator.clipboard.writeText(caption);
@@ -455,7 +473,10 @@ export default function HomePage() {
             <div className={styles.sectionHeader}>
               <div className="badge badge-purple">Step 2</div>
               <h2 className={styles.sectionTitle}>Choose Your Design</h2>
-              <p className={styles.sectionDesc}>Three different styles, each crafted with a unique design system. Click any to preview, then download as a 1080×1080 PNG.</p>
+              <p className={styles.sectionDesc}>
+                Three different styles, each crafted with a unique design system. Click any to preview, then download as a{' '}
+                <strong>{PLATFORM_SIZES[platform].width}×{PLATFORM_SIZES[platform].height}px</strong> PNG — optimised for {PLATFORM_OPTIONS.find(p => p.value === platform)?.label}.
+              </p>
             </div>
 
             <DesignSelector
@@ -482,8 +503,11 @@ export default function HomePage() {
                       <span className={styles.designDesc}>{designs[meme.design].tagline}</span>
                     </div>
 
-                    {/* 1080x1080 canvas preview */}
-                    <div className={styles.canvasWrapper}>
+                    {/* Canvas preview – aspect ratio matches platform */}
+                    <div
+                      className={styles.canvasWrapper}
+                      style={{ paddingTop: `${(PLATFORM_SIZES[platform].height / PLATFORM_SIZES[platform].width) * 100}%` }}
+                    >
                       <div className={styles.canvasInner} ref={el => { previewRefs.current[i] = el; }}>
                         <MemePreview
                           design={meme.design}
