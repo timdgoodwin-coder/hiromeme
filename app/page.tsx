@@ -211,38 +211,38 @@ export default function HomePage() {
       const blob     = await (await fetch(dataUrl)).blob();
       const blobUrl  = URL.createObjectURL(blob);
 
-      // Tier 1: Web Share API with file (iOS Safari 15+, some Android)
-      if (navigator.canShare) {
-        try {
-          const file = new File([blob], filename, { type: 'image/png' });
-          if (navigator.canShare({ files: [file] })) {
-            await navigator.share({ files: [file], title: filename });
-            URL.revokeObjectURL(blobUrl);
-            return;
-          }
-        } catch (shareErr) {
-          if ((shareErr as Error).name === 'AbortError') {
-            URL.revokeObjectURL(blobUrl);
-            return;
-          }
-          // fall through to next tier
-        }
-      }
-
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
       if (isMobile) {
-        // Tier 2: Open image in new tab — user can long-press → "Save to Photos"
-        // Works on ALL mobile browsers (Chrome iOS, Firefox, Samsung Internet, etc.)
+        // Mobile: try Web Share API first (iOS Safari 15+ gets native share sheet → Save Image)
+        if (navigator.canShare) {
+          try {
+            const file = new File([blob], filename, { type: 'image/png' });
+            if (navigator.canShare({ files: [file] })) {
+              await navigator.share({ files: [file], title: filename });
+              URL.revokeObjectURL(blobUrl);
+              return;
+            }
+          } catch (shareErr) {
+            if ((shareErr as Error).name === 'AbortError') {
+              URL.revokeObjectURL(blobUrl);
+              return;
+            }
+            // Share failed — fall through to new-tab approach
+          }
+        }
+        // Fallback for all other mobile browsers: open image in new tab
+        // User can then long-press → "Save to Photos" / "Download image"
         window.open(blobUrl, '_blank');
-        // Revoke after a delay so the new tab has time to load the image
         setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
       } else {
-        // Tier 3: Desktop — standard anchor download
+        // Desktop: standard anchor download (append to DOM for Firefox compatibility)
         const link    = document.createElement('a');
         link.download = filename;
         link.href     = blobUrl;
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
         setTimeout(() => URL.revokeObjectURL(blobUrl), 5_000);
       }
     } catch (err) {
