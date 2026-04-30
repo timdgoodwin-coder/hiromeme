@@ -24,12 +24,12 @@ export const designs: Record<MemeDesign, DesignConfig> = {
   azure: {
     name: 'Azure Deep',
     tagline: 'Electric blue on midnight navy',
-    description: 'Rich navy depths with electric blue accents. Premium, authoritative & striking.',
+    description: 'Rich navy depths with electric blue accents. Crisp Plus Jakarta Sans headline — premium, authoritative & striking.',
   },
   linear: {
-    name: 'Clean Light',
-    tagline: 'White canvas, dark ink & coral pop',
-    description: 'Crisp white background with bold dark typography. Stands out in any feed.',
+    name: 'Apple Inspired',
+    tagline: 'Pure white, SF Pro, radical space',
+    description: 'Cinematic Apple aesthetic — pure white canvas, near-black ink, Apple blue CTA. Typography-first minimalism.',
   },
 };
 

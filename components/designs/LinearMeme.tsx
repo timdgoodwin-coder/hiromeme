@@ -6,158 +6,136 @@ interface Props {
   canvasHeight?: number;
 }
 
-// "Clean Light" — crisp white canvas, dark ink text, coral/amber accent.
+// "Apple Inspired" — pure white canvas, SF Pro stack, near-black ink, Apple blue accent.
+// Principles: radical whitespace, cinematic restraint, zero decoration, typography-first.
 export default function LinearMeme({ data, canvasWidth = 1080, canvasHeight = 1080 }: Props) {
   const { headline, subtext, cta, profileLink, linkLabel } = data;
 
   const s = Math.min(canvasWidth, canvasHeight) / 1080;
   const isLandscape = canvasWidth / canvasHeight > 1.2;
+  const isPortrait  = canvasHeight / canvasWidth > 1.15;
 
   const px = (v: number) => `${Math.round(v * s)}px`;
 
-  const headlineBase = headline.length > 50 ? 60 : headline.length > 30 ? 76 : 92;
+  // Apple-style: headline goes LARGE, tight tracking
+  const headlineBase = headline.length > 60
+    ? 56
+    : headline.length > 40
+      ? 72
+      : headline.length > 25
+        ? 88
+        : 108;
   const headlinePx = px(headlineBase);
+
+  const subtextBase = isPortrait ? 36 : 32;
+  const subtextPx   = px(subtextBase);
+
+  const paddingV = isLandscape ? 70 : isPortrait ? 110 : 96;
+  const paddingH = isLandscape ? 80 : isPortrait ? 96 : 96;
+
+  // Apple palette
+  const ink      = '#1d1d1f';   // near-black
+  const midGray  = '#6e6e73';   // Apple secondary text
+  const hairline = '#d2d2d7';   // Apple rule / border
+  const appleBlue = '#0071e3';  // Apple CTA blue
 
   return (
     <div style={{
       width: `${canvasWidth}px`,
       height: `${canvasHeight}px`,
-      background: '#fafafa',
+      background: '#ffffff',
       position: 'relative',
       overflow: 'hidden',
-      fontFamily: "'Inter', sans-serif",
+      fontFamily: "-apple-system, 'SF Pro Display', 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
       display: 'flex',
       flexDirection: isLandscape ? 'row' : 'column',
       alignItems: isLandscape ? 'center' : undefined,
       justifyContent: isLandscape ? 'flex-start' : 'center',
-      padding: px(isLandscape ? 60 : 80),
-      gap: isLandscape ? px(60) : undefined,
+      padding: `${px(paddingV)} ${px(paddingH)}`,
+      gap: isLandscape ? px(72) : undefined,
       boxSizing: 'border-box',
     }}>
-      {/* Warm paper texture tint */}
+
+      {/* ── Subtle off-white gradient wash — Apple's signature light tint ── */}
       <div style={{
         position: 'absolute',
         inset: 0,
-        background: 'radial-gradient(ellipse 140% 80% at 80% 120%, #fff3e010 0%, transparent 60%)',
+        background: 'radial-gradient(ellipse 120% 90% at 50% -10%, #f5f5f7 0%, transparent 55%)',
         pointerEvents: 'none',
       }} />
 
-      {/* Top accent bar — bold coral */}
+      {/* ── Ultra-thin top rule — Apple‑style hairline ── */}
       <div style={{
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
-        height: px(6),
-        background: 'linear-gradient(90deg, #ff6b35, #f7c59f, #ff6b35)',
+        height: px(1),
+        background: hairline,
+        pointerEvents: 'none',
       }} />
 
-      {/* Right side decorative geometry — only for square */}
-      {!isLandscape && (
-        <>
-          <div style={{
-            position: 'absolute',
-            right: px(-60),
-            top: '50%',
-            transform: 'translateY(-50%)',
-            width: px(320),
-            height: px(320),
-            borderRadius: '50%',
-            border: `1px solid #ff6b3515`,
-            opacity: 0.6,
-          }} />
-          <div style={{
-            position: 'absolute',
-            right: px(20),
-            top: '50%',
-            transform: 'translateY(-50%)',
-            width: px(200),
-            height: px(200),
-            borderRadius: '50%',
-            border: `1px solid #ff6b3520`,
-            opacity: 0.5,
-          }} />
-        </>
-      )}
-
-      {/* Bottom-left large square */}
+      {/* ── Thin bottom rule ── */}
       <div style={{
         position: 'absolute',
-        bottom: px(-120),
-        left: px(-60),
-        width: px(300),
-        height: px(300),
-        background: '#ff6b350a',
-        borderRadius: px(40),
-        transform: 'rotate(20deg)',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: px(1),
+        background: hairline,
+        pointerEvents: 'none',
       }} />
 
-      {/* Thin horizontal rule near bottom — square only */}
+      {/* ══════════════════════════════════════════════
+          SQUARE / PORTRAIT layout
+      ══════════════════════════════════════════════ */}
       {!isLandscape && (
-        <div style={{
-          position: 'absolute',
-          bottom: px(110),
-          left: px(80),
-          right: px(80),
-          height: '1px',
-          background: '#e5e7eb',
-        }} />
-      )}
+        <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>
 
-      {/* ── SQUARE layout ── */}
-      {!isLandscape && (
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          {/* Label chip */}
+          {/* Eyebrow label — Apple "category" tag */}
           <div style={{
-            display: 'flex',
-            width: 'fit-content',
-            alignItems: 'center',
-            gap: px(8),
-            background: '#ff6b3512',
-            border: '1px solid #ff6b3530',
-            borderRadius: px(8),
-            padding: `${px(8)} ${px(18)}`,
-            marginBottom: px(44),
+            fontFamily: "-apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif",
+            fontSize: px(14),
+            fontWeight: 600,
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            color: appleBlue,
+            marginBottom: px(isPortrait ? 28 : 22),
           }}>
-            <div style={{ width: px(6), height: px(6), borderRadius: '50%', background: '#ff6b35' }} />
-            <span style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: px(13),
-              fontWeight: 700,
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              color: '#ff6b35',
-            }}>Perspective</span>
+            Insight
           </div>
 
+          {/* Headline — SF Pro Display style: massive, tight */}
           <h1 style={{
-            fontFamily: "'Space Grotesk', 'Inter', sans-serif",
+            fontFamily: "-apple-system, 'SF Pro Display', 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
             fontSize: headlinePx,
-            fontWeight: 800,
-            lineHeight: 1.05,
-            letterSpacing: '-0.03em',
-            color: '#111827',
-            marginBottom: px(36),
-            maxWidth: px(880),
+            fontWeight: 700,
+            lineHeight: 1.08,
+            letterSpacing: '-0.04em',
+            color: ink,
+            marginBottom: px(isPortrait ? 44 : 36),
+            maxWidth: px(isPortrait ? 900 : 880),
           }}>
             {headline}
           </h1>
 
-          {/* Coral accent line */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: px(12), marginBottom: px(36) }}>
-            <div style={{ width: px(56), height: px(4), background: 'linear-gradient(90deg, #ff6b35, #f7c59f)', borderRadius: px(2) }} />
-            <div style={{ width: px(12), height: px(4), background: '#e5e7eb', borderRadius: px(2) }} />
-          </div>
+          {/* Apple‑style horizontal hairline rule */}
+          <div style={{
+            width: px(48),
+            height: px(1),
+            background: hairline,
+            marginBottom: px(isPortrait ? 44 : 36),
+          }} />
 
           {subtext && (
             <p style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: px(38),
+              fontFamily: "-apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif",
+              fontSize: subtextPx,
               fontWeight: 400,
-              lineHeight: 1.5,
-              color: '#374151',
-              maxWidth: px(860),
-              marginBottom: cta ? px(48) : '0',
+              lineHeight: 1.6,
+              color: midGray,
+              maxWidth: px(isPortrait ? 880 : 840),
+              marginBottom: cta ? px(isPortrait ? 60 : 48) : '0',
               letterSpacing: '-0.01em',
             }}>
               {subtext}
@@ -166,26 +144,33 @@ export default function LinearMeme({ data, canvasWidth = 1080, canvasHeight = 10
 
           {cta && (
             <div style={{
-              display: 'flex',
-              width: 'fit-content',
+              display: 'inline-flex',
               alignItems: 'center',
-              gap: px(10),
-              background: '#ff6b35',
-              borderRadius: px(10),
-              padding: `${px(16)} ${px(30)}`,
+              gap: px(8),
+              background: appleBlue,
+              borderRadius: px(980),   // Apple pill button
+              padding: `${px(16)} ${px(36)}`,
               marginTop: px(8),
             }}>
-              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: px(22), fontWeight: 700, color: '#ffffff', letterSpacing: '-0.01em' }}>{cta}</span>
-              <span style={{ color: '#fff', fontSize: px(22) }}>→</span>
+              <span style={{
+                fontFamily: "-apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif",
+                fontSize: px(20),
+                fontWeight: 600,
+                color: '#ffffff',
+                letterSpacing: '-0.01em',
+              }}>{cta}</span>
+              <span style={{ fontSize: px(18), color: 'rgba(255,255,255,0.8)' }}>›</span>
             </div>
           )}
         </div>
       )}
 
-      {/* ── LANDSCAPE layout ── */}
+      {/* ══════════════════════════════════════════════
+          LANDSCAPE layout (two-column)
+      ══════════════════════════════════════════════ */}
       {isLandscape && (
         <>
-          {/* Left column: label + headline */}
+          {/* Left column: eyebrow + headline */}
           <div style={{
             position: 'relative',
             zIndex: 1,
@@ -196,48 +181,36 @@ export default function LinearMeme({ data, canvasWidth = 1080, canvasHeight = 10
             justifyContent: 'center',
           }}>
             <div style={{
-              display: 'flex',
-              width: 'fit-content',
-              alignItems: 'center',
-              gap: px(8),
-              background: '#ff6b3512',
-              border: '1px solid #ff6b3530',
-              borderRadius: px(8),
-              padding: `${px(6)} ${px(14)}`,
-              marginBottom: px(24),
+              fontFamily: "-apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif",
+              fontSize: px(12),
+              fontWeight: 600,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: appleBlue,
+              marginBottom: px(20),
             }}>
-              <div style={{ width: px(5), height: px(5), borderRadius: '50%', background: '#ff6b35' }} />
-              <span style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: px(12),
-                fontWeight: 700,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                color: '#ff6b35',
-              }}>Perspective</span>
+              Insight
             </div>
-
             <h1 style={{
-              fontFamily: "'Space Grotesk', 'Inter', sans-serif",
+              fontFamily: "-apple-system, 'SF Pro Display', 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
               fontSize: headlinePx,
-              fontWeight: 800,
-              lineHeight: 1.05,
-              letterSpacing: '-0.03em',
-              color: '#111827',
+              fontWeight: 700,
+              lineHeight: 1.08,
+              letterSpacing: '-0.04em',
+              color: ink,
               margin: 0,
             }}>
               {headline}
             </h1>
           </div>
 
-          {/* Vertical coral divider */}
+          {/* Vertical hairline divider */}
           <div style={{
             position: 'relative',
             zIndex: 1,
-            width: px(4),
+            width: px(1),
             alignSelf: 'stretch',
-            background: 'linear-gradient(180deg, transparent, #ff6b35, transparent)',
-            borderRadius: px(2),
+            background: hairline,
             flexShrink: 0,
           }} />
 
@@ -249,15 +222,15 @@ export default function LinearMeme({ data, canvasWidth = 1080, canvasHeight = 10
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            gap: px(24),
+            gap: px(28),
           }}>
             {subtext && (
               <p style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: px(30),
+                fontFamily: "-apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif",
+                fontSize: px(28),
                 fontWeight: 400,
-                lineHeight: 1.5,
-                color: '#374151',
+                lineHeight: 1.55,
+                color: midGray,
                 margin: 0,
                 letterSpacing: '-0.01em',
               }}>
@@ -267,21 +240,32 @@ export default function LinearMeme({ data, canvasWidth = 1080, canvasHeight = 10
 
             {cta && (
               <div style={{
-                display: 'flex',
-                width: 'fit-content',
+                display: 'inline-flex',
                 alignItems: 'center',
-                gap: px(10),
-                background: '#ff6b35',
-                borderRadius: px(10),
-                padding: `${px(12)} ${px(22)}`,
+                gap: px(8),
+                background: appleBlue,
+                borderRadius: px(980),
+                padding: `${px(13)} ${px(28)}`,
+                width: 'fit-content',
               }}>
-                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: px(18), fontWeight: 700, color: '#ffffff' }}>{cta}</span>
-                <span style={{ color: '#fff', fontSize: px(18) }}>→</span>
+                <span style={{
+                  fontFamily: "-apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif",
+                  fontSize: px(17),
+                  fontWeight: 600,
+                  color: '#ffffff',
+                }}>{cta}</span>
+                <span style={{ fontSize: px(16), color: 'rgba(255,255,255,0.8)' }}>›</span>
               </div>
             )}
 
             {(profileLink || linkLabel) && (
-              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: px(18), fontWeight: 600, color: '#ff6b35' }}>
+              <div style={{
+                fontFamily: "-apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif",
+                fontSize: px(17),
+                fontWeight: 500,
+                color: appleBlue,
+                letterSpacing: '-0.01em',
+              }}>
                 {linkLabel || profileLink}
               </div>
             )}
@@ -289,22 +273,34 @@ export default function LinearMeme({ data, canvasWidth = 1080, canvasHeight = 10
         </>
       )}
 
-      {/* Bottom link — square only */}
+      {/* ── Bottom link bar — square/portrait only ── */}
       {!isLandscape && (profileLink || linkLabel) && (
         <div style={{
           position: 'absolute',
-          bottom: px(48),
-          left: px(80),
-          right: px(80),
+          bottom: px(paddingV),
+          left: px(paddingH),
+          right: px(paddingH),
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
-          <div style={{ fontFamily: "'Inter', sans-serif", fontSize: px(22), fontWeight: 600, color: '#ff6b35', letterSpacing: '-0.01em' }}>
+          <div style={{
+            fontFamily: "-apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif",
+            fontSize: px(20),
+            fontWeight: 500,
+            color: appleBlue,
+            letterSpacing: '-0.01em',
+          }}>
             {linkLabel || profileLink}
           </div>
-          <div style={{ fontFamily: "'Inter', sans-serif", fontSize: px(12), color: '#9ca3af', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            Clean Light ◎
+          <div style={{
+            fontFamily: "-apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif",
+            fontSize: px(11),
+            color: hairline,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+          }}>
+            Apple Inspired ◦
           </div>
         </div>
       )}

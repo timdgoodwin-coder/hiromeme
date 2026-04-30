@@ -167,12 +167,12 @@ export default function AzureMeme({ data, canvasWidth = 1080, canvasHeight = 108
 
           {/* Headline */}
           <h1 style={{
-            fontFamily: "'Syne', 'Space Grotesk', 'Inter', sans-serif",
+            fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
             fontSize: headlinePx,
             fontWeight: 800,
             lineHeight: 1.05,
             letterSpacing: '-0.03em',
-            color: '#f1f5f9',
+            color: '#ffffff',
             marginBottom: px(isPortrait ? 36 : 28),
             maxWidth: px(isPortrait ? 900 : 880),
           }}>
@@ -290,12 +290,12 @@ export default function AzureMeme({ data, canvasWidth = 1080, canvasHeight = 108
             </div>
 
             <h1 style={{
-              fontFamily: "'Syne', 'Space Grotesk', 'Inter', sans-serif",
+              fontFamily: "'Plus Jakarta Sans', 'Inter', system-ui, sans-serif",
               fontSize: headlinePx,
               fontWeight: 800,
               lineHeight: 1.05,
               letterSpacing: '-0.03em',
-              color: '#f1f5f9',
+              color: '#ffffff',
               margin: 0,
             }}>
               {headline}
