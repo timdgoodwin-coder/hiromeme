@@ -126,7 +126,7 @@ Return a JSON array of exactly 3 objects. Each must have:
 
 Each design should feel different in style and angle:
 - "spotify":  Bold, music/culture energy. Use ALL CAPS for headline. Punchy af.
-- "raycast":  Sleek, productivity/tech vibe. Smart and precise. Mix of caps.
+- "azure":    Sleek, premium authority. Smart and precise. Confident sentence case.
 - "linear":   Minimal, thoughtful. Lowercase feels fine. Engineer's clarity.
 
 Make each headline completely different from the others. Vary the angle, hook, and emotional tone.

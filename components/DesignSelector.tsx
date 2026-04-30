@@ -20,13 +20,13 @@ interface Props {
 
 const DESIGN_ICONS: Record<MemeDesign, string> = {
   spotify: '🎵',
-  raycast: '⚡',
+  azure: '🔷',
   linear: '◈',
 };
 
 const DESIGN_COLORS: Record<MemeDesign, string> = {
   spotify: '#1db954',
-  raycast: '#ff6363',
+  azure: '#3b82f6',
   linear: '#7c3aed',
 };
 

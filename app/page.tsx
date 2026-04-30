@@ -102,10 +102,10 @@ type Action      = typeof ACTION_OPTIONS[number]['value'];
 
 // Optimal export dimensions per platform
 const PLATFORM_SIZES: Record<Platform, { width: number; height: number }> = {
-  instagram: { width: 1080, height: 1080 }, // square post
-  linkedin:  { width: 1200, height: 628  }, // landscape preview card
+  instagram: { width: 1080, height: 1350 }, // portrait post
+  linkedin:  { width: 1200, height: 1200 }, // square post
   twitter:   { width: 1600, height: 900  }, // 16:9 card
-  facebook:  { width: 1200, height: 630  }, // link / post image
+  facebook:  { width: 940,  height: 788  }, // post image
 };
 
 // ─── Main component ───────────────────────────────────────────────────────────

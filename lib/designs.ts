@@ -1,4 +1,4 @@
-export type MemeDesign = 'spotify' | 'raycast' | 'linear';
+export type MemeDesign = 'spotify' | 'azure' | 'linear';
 
 export interface DesignConfig {
   name: string;
@@ -21,10 +21,10 @@ export const designs: Record<MemeDesign, DesignConfig> = {
     tagline: 'Vibrant green on deep black',
     description: 'Bold, music-inspired. Neon green accent on void-black. Maximum punch.',
   },
-  raycast: {
-    name: 'Raycast Glow',
-    tagline: 'Gradient chrome & electric aura',
-    description: 'Premium dark chrome with vibrant gradient accents. Sleek & powerful.',
+  azure: {
+    name: 'Azure Deep',
+    tagline: 'Electric blue on midnight navy',
+    description: 'Rich navy depths with electric blue accents. Premium, authoritative & striking.',
   },
   linear: {
     name: 'Clean Light',
@@ -33,4 +33,4 @@ export const designs: Record<MemeDesign, DesignConfig> = {
   },
 };
 
-export const ALL_DESIGNS: MemeDesign[] = ['spotify', 'raycast', 'linear'];
+export const ALL_DESIGNS: MemeDesign[] = ['spotify', 'azure', 'linear'];

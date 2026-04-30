@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { MemeDesign, MemeData } from '@/lib/designs';
 import SpotifyMeme from './designs/SpotifyMeme';
-import RaycastMeme from './designs/RaycastMeme';
+import AzureMeme from './designs/AzureMeme';
 import LinearMeme from './designs/LinearMeme';
 
 interface MemePreviewProps {
@@ -41,7 +41,7 @@ export default function MemePreview({ design, data, isExport = false, exportSize
 
   const designComponents = {
     spotify: SpotifyMeme,
-    raycast: RaycastMeme,
+    azure: AzureMeme,
     linear: LinearMeme,
   };
 
