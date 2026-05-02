@@ -196,43 +196,42 @@ export default function HomePage() {
       const inner = el.firstElementChild as HTMLElement | null;
       if (!inner) return;
 
-      // Strip the preview scale transform so html2canvas captures full pixels
-      const prevTransform = inner.style.transform;
-      const prevOrigin    = inner.style.transformOrigin;
-      const prevWidth     = inner.style.width;
-      const prevHeight    = inner.style.height;
+      // ── Clone-based capture ─────────────────────────────────────────────────
+      // Directly mutating `inner` leaves it inside canvasInner (overflow:hidden),
+      // so html2canvas clips the bottom of the design and the CTA pill disappears.
+      // Instead: deep-clone the element, mount it off-screen in a fresh wrapper
+      // with no overflow constraint, capture that, then clean up.
+      const clone = inner.cloneNode(true) as HTMLElement;
 
-      inner.style.transform       = 'none';
-      inner.style.transformOrigin = 'top left';
-      inner.style.width           = `${exportW}px`;
-      inner.style.height          = `${exportH}px`;
+      // Reset transform and force full export dimensions on the clone
+      clone.style.transform       = 'none';
+      clone.style.transformOrigin = 'top left';
+      clone.style.width           = `${exportW}px`;
+      clone.style.height          = `${exportH}px`;
+      clone.style.position        = 'fixed';
+      clone.style.top             = '-99999px';
+      clone.style.left            = '0px';
+      clone.style.zIndex          = '-9999';
+      clone.style.overflow        = 'visible';
 
-      // Allow the DOM to reflow after the transform/size change
-      await new Promise(r => setTimeout(r, 80));
+      document.body.appendChild(clone);
 
-      const rect = inner.getBoundingClientRect();
+      // Allow a paint cycle so fonts and layout settle
+      await new Promise(r => setTimeout(r, 100));
 
-      const canvas = await html2canvas(inner, {
-        scale:       1,
-        useCORS:     true,
-        allowTaint:  true,
+      const canvas = await html2canvas(clone, {
+        scale:           1,
+        useCORS:         true,
+        allowTaint:      true,
         backgroundColor: null,
-        width:       exportW,
-        height:      exportH,
-        // Use a safe window size so the page layout isn't clipped
-        windowWidth:  Math.max(exportW, typeof window !== 'undefined' ? window.innerWidth : exportW),
-        windowHeight: Math.max(exportH, typeof window !== 'undefined' ? window.innerHeight : exportH),
-        // Account for scroll position so the captured rect is correct
-        scrollX: -(rect.left + (window.scrollX || 0)),
-        scrollY: -(rect.top  + (window.scrollY || 0)),
-        logging: false,
+        width:           exportW,
+        height:          exportH,
+        windowWidth:     exportW,
+        windowHeight:    exportH,
+        logging:         false,
       });
 
-      // Restore original preview styles
-      inner.style.transform       = prevTransform;
-      inner.style.transformOrigin = prevOrigin;
-      inner.style.width           = prevWidth;
-      inner.style.height          = prevHeight;
+      document.body.removeChild(clone);
 
       const filename = `meme-${designs[memes[index].design].name.toLowerCase().replace(/\s+/g, '-')}-${platform}-${exportW}x${exportH}-${Date.now()}.png`;
       const dataUrl  = canvas.toDataURL('image/png', 1.0);
