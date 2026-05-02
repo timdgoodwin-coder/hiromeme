@@ -220,11 +220,11 @@ export default function AzureMeme({ data, canvasWidth = 1080, canvasHeight = 108
 
           {cta && (
             <div style={{
-              display: 'inline-flex',
+              display: 'flex',
+              width: 'fit-content',
               alignItems: 'center',
               gap: px(12),
-              background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
-              boxShadow: `0 ${px(4)} ${px(24)} rgba(59,130,246,0.4)`,
+              background: '#2563eb',
               borderRadius: px(12),
               padding: `${px(16)} ${px(32)}`,
               marginTop: px(8),
@@ -304,7 +304,7 @@ export default function AzureMeme({ data, canvasWidth = 1080, canvasHeight = 108
             zIndex: 1,
             width: px(1),
             alignSelf: 'stretch',
-            background: 'linear-gradient(180deg, transparent, #3b82f660, #60a5fa60, transparent)',
+            background: 'linear-gradient(180deg, rgba(6,13,31,0), #3b82f660, #60a5fa60, rgba(6,13,31,0))',
             flexShrink: 0,
           }} />
 
@@ -334,11 +334,11 @@ export default function AzureMeme({ data, canvasWidth = 1080, canvasHeight = 108
 
             {cta && (
               <div style={{
-                display: 'inline-flex',
+                display: 'flex',
+                width: 'fit-content',
                 alignItems: 'center',
                 gap: px(10),
-                background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
-                boxShadow: `0 ${px(3)} ${px(18)} rgba(59,130,246,0.4)`,
+                background: '#2563eb',
                 borderRadius: px(10),
                 padding: `${px(12)} ${px(24)}`,
               }}>

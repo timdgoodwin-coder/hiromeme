@@ -60,7 +60,7 @@ export default function LinearMeme({ data, canvasWidth = 1080, canvasHeight = 10
       <div style={{
         position: 'absolute',
         inset: 0,
-        background: 'radial-gradient(ellipse 120% 90% at 50% -10%, #f5f5f7 0%, transparent 55%)',
+        background: 'radial-gradient(ellipse 120% 90% at 50% -10%, #f5f5f7 0%, rgba(255,255,255,0) 55%)',
         pointerEvents: 'none',
       }} />
 
