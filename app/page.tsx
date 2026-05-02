@@ -196,7 +196,7 @@ export default function HomePage() {
       const inner = el.firstElementChild as HTMLElement | null;
       if (!inner) return;
 
-      // Temporarily remove the preview scale transform so html2canvas sees full pixels
+      // Strip the preview scale transform so html2canvas captures full pixels
       const prevTransform = inner.style.transform;
       const prevOrigin    = inner.style.transformOrigin;
       const prevWidth     = inner.style.width;
@@ -207,18 +207,28 @@ export default function HomePage() {
       inner.style.width           = `${exportW}px`;
       inner.style.height          = `${exportH}px`;
 
+      // Allow the DOM to reflow after the transform/size change
+      await new Promise(r => setTimeout(r, 80));
+
+      const rect = inner.getBoundingClientRect();
+
       const canvas = await html2canvas(inner, {
-        scale: 1,
-        useCORS: true,
-        allowTaint: true,
+        scale:       1,
+        useCORS:     true,
+        allowTaint:  true,
         backgroundColor: null,
-        width:        exportW,
-        height:       exportH,
-        windowWidth:  exportW,
-        windowHeight: exportH,
+        width:       exportW,
+        height:      exportH,
+        // Use a safe window size so the page layout isn't clipped
+        windowWidth:  Math.max(exportW, typeof window !== 'undefined' ? window.innerWidth : exportW),
+        windowHeight: Math.max(exportH, typeof window !== 'undefined' ? window.innerHeight : exportH),
+        // Account for scroll position so the captured rect is correct
+        scrollX: -(rect.left + (window.scrollX || 0)),
+        scrollY: -(rect.top  + (window.scrollY || 0)),
         logging: false,
       });
 
+      // Restore original preview styles
       inner.style.transform       = prevTransform;
       inner.style.transformOrigin = prevOrigin;
       inner.style.width           = prevWidth;

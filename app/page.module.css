@@ -366,7 +366,7 @@
   cursor: pointer;
   transition: var(--transition);
   white-space: nowrap;
-  line-height: 1;
+  line-height: 1.4;
 }
 
 .btnGroupBtn:hover {

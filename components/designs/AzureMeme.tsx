@@ -61,15 +61,14 @@ export default function AzureMeme({ data, canvasWidth = 1080, canvasHeight = 108
         pointerEvents: 'none',
       }} />
 
-      {/* ── Electric blue radial glow — top right ── */}
+      {/* ── Electric blue radial glow — top right (no CSS filter for html2canvas compat) ── */}
       <div style={{
         position: 'absolute',
         top: px(-150),
         right: px(-80),
         width: px(600),
         height: px(600),
-        background: 'radial-gradient(circle, #3b82f640 0%, #1d4ed820 35%, transparent 70%)',
-        filter: `blur(${px(70)})`,
+        background: 'radial-gradient(circle, rgba(59,130,246,0.18) 0%, rgba(29,78,216,0.08) 45%, transparent 70%)',
         pointerEvents: 'none',
       }} />
 
@@ -80,8 +79,7 @@ export default function AzureMeme({ data, canvasWidth = 1080, canvasHeight = 108
         left: px(-80),
         width: px(500),
         height: px(500),
-        background: 'radial-gradient(circle, #2563eb30 0%, #1e40af15 40%, transparent 70%)',
-        filter: `blur(${px(80)})`,
+        background: 'radial-gradient(circle, rgba(37,99,235,0.14) 0%, rgba(30,64,175,0.06) 50%, transparent 70%)',
         pointerEvents: 'none',
       }} />
 
@@ -140,12 +138,11 @@ export default function AzureMeme({ data, canvasWidth = 1080, canvasHeight = 108
             width: 'fit-content',
             alignItems: 'center',
             gap: px(10),
-            background: 'rgba(59,130,246,0.12)',
+            background: 'rgba(59,130,246,0.15)',
             border: '1px solid rgba(59,130,246,0.35)',
             borderRadius: px(100),
             padding: `${px(8)} ${px(20)}`,
             marginBottom: px(isPortrait ? 52 : 44),
-            backdropFilter: 'blur(4px)',
           }}>
             {/* Pulsing dot */}
             <div style={{
@@ -265,12 +262,11 @@ export default function AzureMeme({ data, canvasWidth = 1080, canvasHeight = 108
               width: 'fit-content',
               alignItems: 'center',
               gap: px(10),
-              background: 'rgba(59,130,246,0.12)',
+              background: 'rgba(59,130,246,0.15)',
               border: '1px solid rgba(59,130,246,0.35)',
               borderRadius: px(100),
               padding: `${px(6)} ${px(16)}`,
               marginBottom: px(28),
-              backdropFilter: 'blur(4px)',
             }}>
               <div style={{
                 width: px(8),
