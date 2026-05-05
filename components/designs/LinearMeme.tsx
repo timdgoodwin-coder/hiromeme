@@ -144,7 +144,8 @@ export default function LinearMeme({ data, canvasWidth = 1080, canvasHeight = 10
 
           {cta && (
             <div style={{
-              display: 'inline-flex',
+              display: 'flex',
+              width: 'fit-content',
               alignItems: 'center',
               gap: px(8),
               background: appleBlue,
@@ -156,10 +157,11 @@ export default function LinearMeme({ data, canvasWidth = 1080, canvasHeight = 10
                 fontFamily: "-apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif",
                 fontSize: px(20),
                 fontWeight: 600,
+                lineHeight: 1,
                 color: '#ffffff',
                 letterSpacing: '-0.01em',
               }}>{cta}</span>
-              <span style={{ fontSize: px(18), color: 'rgba(255,255,255,0.8)' }}>›</span>
+              <span style={{ fontSize: px(18), lineHeight: 1, color: 'rgba(255,255,255,0.8)' }}>›</span>
             </div>
           )}
         </div>
@@ -240,21 +242,22 @@ export default function LinearMeme({ data, canvasWidth = 1080, canvasHeight = 10
 
             {cta && (
               <div style={{
-                display: 'inline-flex',
+                display: 'flex',
+                width: 'fit-content',
                 alignItems: 'center',
                 gap: px(8),
                 background: appleBlue,
                 borderRadius: px(980),
                 padding: `${px(13)} ${px(28)}`,
-                width: 'fit-content',
               }}>
                 <span style={{
                   fontFamily: "-apple-system, 'SF Pro Text', 'Inter', system-ui, sans-serif",
                   fontSize: px(17),
                   fontWeight: 600,
+                  lineHeight: 1,
                   color: '#ffffff',
                 }}>{cta}</span>
-                <span style={{ fontSize: px(16), color: 'rgba(255,255,255,0.8)' }}>›</span>
+                <span style={{ fontSize: px(16), lineHeight: 1, color: 'rgba(255,255,255,0.8)' }}>›</span>
               </div>
             )}
 
