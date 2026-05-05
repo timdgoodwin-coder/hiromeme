@@ -43,6 +43,7 @@ function BtnGroup<T extends string>({
 // ─── Option sets ──────────────────────────────────────────────────────────────
 const PLATFORM_OPTIONS = [
   { value: 'instagram', label: '📸 Instagram' },
+  { value: 'story',     label: '📱 Story'     },
   { value: 'linkedin',  label: '💼 LinkedIn'  },
   { value: 'twitter',   label: '🐦 Twitter/X' },
   { value: 'facebook',  label: '👥 Facebook'  },
@@ -103,6 +104,7 @@ type Action      = typeof ACTION_OPTIONS[number]['value'];
 // Optimal export dimensions per platform
 const PLATFORM_SIZES: Record<Platform, { width: number; height: number }> = {
   instagram: { width: 1080, height: 1350 }, // portrait post
+  story:     { width: 1080, height: 1920 }, // Instagram / TikTok story
   linkedin:  { width: 1200, height: 1200 }, // square post
   twitter:   { width: 1600, height: 900  }, // 16:9 card
   facebook:  { width: 940,  height: 788  }, // post image
